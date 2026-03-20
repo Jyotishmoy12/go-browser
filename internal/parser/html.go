@@ -40,18 +40,21 @@ func (p *Parser) parseNode() *dom.Node {
 
 func (p *Parser) parseElement() *dom.Node {
 	p.pos++
-	tagName := p.consumeIdentifier()
+	tagName := strings.ToLower(p.consumeIdentifier())
 
 	attrs := make(map[string]string)
 	p.consumeWhitespace()
 
-	for !p.eof() && p.input[p.pos] != '>' {
+	for !p.eof() {
+		p.consumeWhitespace()
+		if p.input[p.pos] == '>' {
+			break
+		}
 		name, value := p.parseAttribute()
 		if name == "" {
 			break
 		}
 		attrs[name] = value
-		p.consumeWhitespace()
 	}
 
 	if !p.eof() {
@@ -69,7 +72,7 @@ func (p *Parser) parseElement() *dom.Node {
 	return dom.NewElement(tagName, attrs).AddChildren(children)
 }
 func (p *Parser) parseAttribute() (string, string) {
-	name := p.consumeIdentifier()
+	name := strings.ToLower(p.consumeIdentifier())
 	if name == "" {
 		return "", ""
 	}
