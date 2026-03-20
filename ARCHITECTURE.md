@@ -309,7 +309,6 @@ classDiagram
 **Entry point:** `NewRuntime(root *dom.Node) *JSRuntime`
 
 JavaScript runs **before** CSS styling and layout, allowing scripts to mutate the DOM tree first.
-
 ```mermaid
 sequenceDiagram
     participant Nav as navigate()
@@ -317,8 +316,8 @@ sequenceDiagram
     participant JSR as javascript.NewRuntime()
     participant Otto as otto.Otto VM
 
-    Nav->>Find: Walk DOM tree for &lt;script&gt; nodes
-    Note over Find: Collect Children[0].Text from every\nnode where TagName == "script"
+    Nav->>Find: Walk DOM tree for script nodes
+    Note over Find: Collect Children[0].Text from everynode where TagName == "script"
     Find-->>Nav: []string of script source code
 
     Nav->>JSR: NewRuntime(domRoot)
