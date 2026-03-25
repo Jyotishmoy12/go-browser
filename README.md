@@ -155,3 +155,68 @@ go test -v ./...
 ```
 
 > For a breakdown of what each test covers and suggestions for expanding coverage, see [TESTING.md](./TESTING.md).
+
+## How a Browser Loads a Website
+
+### **1. Network “Pre-Flight”**
+
+**DNS Resolution**
+Before sending a request, the browser checks its cache. If needed, it queries a DNS server to translate `google.com` into an IP address.
+
+**TCP Socket Connection**
+The browser establishes a TCP connection to the server — typically using **port 443** for HTTPS.
+
+---
+
+### **2. Handshake (Security Layer)**
+
+**TLS Handshake**
+The browser and server negotiate encryption keys to secure communication.
+If this process fails, the user sees a **Privacy Error**.
+
+---
+
+### **3. HTTP Exchange**
+
+**GET Request**
+The browser sends a properly formatted HTTP request containing headers and asks for a specific resource (e.g., `/index.html`).
+
+**Server Response**
+The server replies with:
+
+* A **status code** (e.g., `200 OK`)
+* The **raw HTML content**
+
+---
+
+### **4. Critical Rendering Path (Core Processing)**
+
+This is where the browser transforms downloaded data into visuals:
+
+**Tokenization & Parsing**
+HTML text is converted into tokens and structured into a **DOM tree**.
+
+**Style Calculation**
+CSS rules are combined with the DOM to create the **CSSOM** (CSS Object Model).
+
+**Layout (Reflow)**
+The browser calculates the exact position and size
+*(X, Y, width, height)* of every element on the page.
+
+**Painting**
+All computed elements are converted into pixels and drawn on the screen.
+
+---
+
+### **5. Interactivity & Execution**
+
+**JavaScript Engine Execution**
+When the browser encounters `<script>` tags:
+
+* DOM construction pauses
+* JavaScript code executes via the browser’s JS engine
+* Scripts can dynamically modify the DOM and CSSOM, updating the page in real time
+
+
+
+
